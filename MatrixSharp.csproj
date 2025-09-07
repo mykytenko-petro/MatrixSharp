@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <!-- I added this to keep vscode's type hints -->
+  <!-- for run use build.sh or dotnet build -p:ExcludeTests=true -->
+  <ItemGroup Condition="'$(ExcludeTests)'=='true'">
+    <Compile Remove="Tests\**\*.cs" />
+  </ItemGroup>
+
+</Project>
