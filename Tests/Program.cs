@@ -1,6 +1,4 @@
-﻿// TODO: try to remake console app on unit test
-
-using MatrixSharp.Core;
+﻿using MatrixSharp.Core;
 
 class Tests
 {
@@ -8,20 +6,23 @@ class Tests
     {
         Matrix A = new(
             [
-                [1, 2],
-                [4, 5],
-                [7, 7]
+                [3, 1],
+                [4, 6],
+                [5, 7],
             ]
         );
 
         Matrix B = new(
             [
-                [1, 2],
-                [4, 5],
-                [7, 8]
+                [3, 4],
+                [2, 5],
             ]
         );
 
-        Console.WriteLine(A - B);
+        Console.WriteLine(A);
+
+        Console.WriteLine(B);
+
+        Console.WriteLine(A * B);
     }
 }

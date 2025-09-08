@@ -7,48 +7,40 @@ namespace MatrixSharp.Core
     {
         public double[][] Body { get; private set; }
 
-        public double Row { get; private set; }
-        public double Column { get; private set; }
+        public int Row { get; private set; }
+        public int Column { get; private set; }
 
         public Matrix(double[][] body)
         {
-            this.Body = body;
+            if (body == null || body.Length == 0)
+                throw new WrongMatrixShape();
 
-            for (int i = 0; i < this.Body.Length; i++)
+            Row = body.Length;
+            Column = body[0].Length;
+
+            for (int i = 0; i < Row; i++)
             {
-                this.Row += 1;
-
-                if (i != 0 && this.Body[i].Length != this.Column)
-                {
+                if (body[i].Length != Column)
                     throw new WrongMatrixShape(body, i);
-                }
-
-                this.Column = 0;
-                for (int j = 0; j < this.Body[i].Length; j++)
-                {
-                    this.Column += 1;
-                }
             }
+
+            Body = body;
         }
 
-        public static Matrix operator +(Matrix A, Matrix B) {
-            double[][] body = [];
-
+        public static Matrix operator +(Matrix A, Matrix B)
+        {
             if (A.Row != B.Row || A.Column != B.Column)
             {
-                throw new UnmachedMatrixShape();
+                throw new UnmatchedMatrixShape();
             }
+
+            double[][] body = [];
 
             for (int i = 0; i < A.Row; i++)
             {
                 double[] row = [];
-
                 for (int j = 0; j < A.Column; j++)
-                {
-                    double sum = A.Body[i][j] + B.Body[i][j];
-
-                    row = row.Append(sum).ToArray();
-                }
+                    row = row.Append(A.Body[i][j] + B.Body[i][j]).ToArray();
 
                 body = body.Append(row).ToArray();
             }
@@ -56,25 +48,48 @@ namespace MatrixSharp.Core
             return new Matrix(body);
         }
 
-        public static Matrix operator -(Matrix A, Matrix B) {
-            double[][] body = [];
-
+        public static Matrix operator -(Matrix A, Matrix B)
+        {
             if (A.Row != B.Row || A.Column != B.Column)
             {
-                throw new UnmachedMatrixShape();
+                throw new UnmatchedMatrixShape();
+            }
+
+            double[][] body = [];
+
+            for (int i = 0; i < A.Row; i++)
+            {
+                double[] row = [];
+                for (int j = 0; j < A.Column; j++)
+                    row = row.Append(A.Body[i][j] - B.Body[i][j]).ToArray();
+
+                body = body.Append(row).ToArray();
+            }
+
+            return new Matrix(body);
+        }
+
+        public static Matrix operator *(Matrix A, Matrix B)
+        {
+            double[][] body = [];
+
+            if (A.Column != B.Row)
+            {
+                throw new WrongMultiplyingMatrixShape();
             }
 
             for (int i = 0; i < A.Row; i++)
             {
                 double[] row = [];
-
-                for (int j = 0; j < A.Column; j++)
+                for (int j = 0; j < B.Column; j++)
                 {
-                    double dif = A.Body[i][j] - B.Body[i][j];
-
-                    row = row.Append(dif).ToArray();
+                    double sum = 0;
+                    for (int k = 0; k < A.Column; k++)
+                    {
+                        sum += A.Body[i][k] * B.Body[k][j];
+                    }
+                    row = row.Append(sum).ToArray();
                 }
-
                 body = body.Append(row).ToArray();
             }
 
@@ -84,19 +99,13 @@ namespace MatrixSharp.Core
         public override string ToString()
         {
             string report = "";
-
-            for (int i = 0; i < this.Body.Length; i++)
+            for (int i = 0; i < Body.Length; i++)
             {
-                report += '|';
-
-                for (int j = 0; j < this.Body[i].Length; j++)
-                {
-                    report += " " + this.Body[i][j];
-                }
-
+                report += "|";
+                for (int j = 0; j < Body[i].Length; j++)
+                    report += " " + Body[i][j];
                 report += " |\n";
             }
-
             return report;
         }
     }

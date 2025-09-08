@@ -1,8 +1,14 @@
 namespace MatrixSharp.Exceptions
 {
-    public class WrongMatrixShape(double[][] body, double wrongRowIndex) : Exception(Report(body, wrongRowIndex))
+    public class WrongMatrixShape : Exception
     {
-        private static string Report(double[][] body, double wrongRowIndex)
+        public WrongMatrixShape() : base("Empty matrices are not allowed") { }
+
+        public WrongMatrixShape(double[][] body, int wrongRowIndex)
+            : base(Report(body, wrongRowIndex))
+        { }
+
+        private static string Report(double[][] body, int wrongRowIndex)
         {
             string report = "\n";
 
@@ -19,7 +25,7 @@ namespace MatrixSharp.Exceptions
 
                 if (i == wrongRowIndex)
                 {
-                    report += " <--- unmaching quantity of columns";
+                    report += " <--- unmatched number of columns";
                 }
 
                 report += "\n";
@@ -29,5 +35,17 @@ namespace MatrixSharp.Exceptions
         }
     }
 
-    public class UnmachedMatrixShape() : Exception("shape of matrixes must be exact same") {}
+    public class UnmatchedMatrixShape : Exception
+    {
+        public UnmatchedMatrixShape()
+            : base("Shape of matrices must be exactly the same")
+        { }
+    }
+    
+    public class WrongMultiplyingMatrixShape : Exception
+    {
+        public WrongMultiplyingMatrixShape()
+            : base("The first matrix\'s columns must match the second matrix\'s rows for multiplication")
+        { }
+    }
 }
