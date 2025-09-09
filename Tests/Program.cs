@@ -1,4 +1,7 @@
-﻿using MatrixSharp.Core;
+﻿using System.Reflection;
+
+using MatrixSharp.Core;
+
 
 class Tests
 {
@@ -12,17 +15,11 @@ class Tests
             ]
         );
 
-        Matrix B = new(
-            [
-                [3, 4],
-                [2, 5],
-            ]
-        );
+        string? directoryPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        Console.WriteLine(A);
-
-        Console.WriteLine(B);
-
-        Console.WriteLine(A * B);
+        if (directoryPath != null)
+        {
+            A.ToTxtFile(Path.Combine(directoryPath, "Array.txt"));
+        }
     }
 }

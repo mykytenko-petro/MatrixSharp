@@ -108,5 +108,19 @@ namespace MatrixSharp.Core
             }
             return report;
         }
+
+        public void ToTxtFile(string filePath)
+        {
+            try
+            {
+                File.WriteAllText(filePath, ToString());
+
+                Console.WriteLine("file saved on this path: " + filePath);
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error);
+            }
+        }
     }
 }
